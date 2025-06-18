@@ -31,7 +31,7 @@ jobs:
         run: aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin ${{ vars.ECR_URL }}
       - name: Create ECR repository if it doesn't exist
         run: |
-          ACTOR = "${{ github.actor }}"
+          ACTOR="${{ github.actor }}"
           # Convert actor to lowercase
           ACTOR_LOWER=$(echo "$ACTOR" | tr '[:upper:]' '[:lower:]')
           REPO_NAME="utec-mlops/${ACTOR_LOWER}/online-prediction-faas"
@@ -44,25 +44,25 @@ jobs:
           fi
       - name: Build image
         run: |
-          ACTOR = "${{ github.actor }}"
+          ACTOR="${{ github.actor }}"
           # Convert actor to lowercase
           ACTOR_LOWER=$(echo "$ACTOR" | tr '[:upper:]' '[:lower:]') 
           docker build -t "utec-mlops/${ACTOR_LOWER}/online-prediction-faas" operation/online_inference_faas
       - name: Tag image
         run: |
-          ACTOR = "${{ github.actor }}"
+          ACTOR="${{ github.actor }}"
           # Convert actor to lowercase
           ACTOR_LOWER=$(echo "$ACTOR" | tr '[:upper:]' '[:lower:]') 
           docker tag "utec-mlops/${ACTOR_LOWER}/online-prediction-faas:latest" "${{ vars.ECR_URL }}/utec-mlops/${ACTOR_LOWER}/online-prediction-faas:latest"
       - name: Push image
         run: |
-          ACTOR = "${{ github.actor }}"
+          ACTOR="${{ github.actor }}"
           # Convert actor to lowercase
           ACTOR_LOWER=$(echo "$ACTOR" | tr '[:upper:]' '[:lower:]') 
           docker push "${{ vars.ECR_URL }}/utec-mlops/${ACTOR_LOWER}/online-prediction-faas:latest"
       - name: Create or update Lambda function
         run: |
-          ACTOR = "${{ github.actor }}"
+          ACTOR="${{ github.actor }}"
           # Convert actor to lowercase
           ACTOR_LOWER=$(echo "$ACTOR" | tr '[:upper:]' '[:lower:]') 
           FUNCTION_NAME="mlops-utec-${ACTOR_LOWER}-online-prediction-faas"
